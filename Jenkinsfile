@@ -36,18 +36,16 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'CI/CD pipeline completed successfully.'
         }
 
-        failure {
-            echo 'CI/CD pipeline failed. Check the stage logs.'
-        }
-
-        always {
-            archiveArtifacts artifacts: '*.tar.gz',
-                             allowEmptyArchive: true
+        stage('Deploy') {
+            steps {
+                sh '''
+                    chmod +x deploy/deploy.sh
+                    sudo deploy/deploy.sh
+                '''
+            }
         }
     }
-}
+
+    post {
